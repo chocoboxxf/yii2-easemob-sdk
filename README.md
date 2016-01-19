@@ -28,7 +28,7 @@
 // 在config/main.php配置文件中定义component配置信息
 'components' => [
   .....
-  'easemob' => [ // 
+  'easemob' => [
     'class' => 'chocoboxxf\Easemob\Easemob',
     'orgName' => '企业ID',
     'appName' => '应用名称',
@@ -42,7 +42,7 @@ $result = Yii::$app->easemob->getUser('username');
 ....
 ```
 
-```
+```php
 // 局部调用
 $easemob = Yii::createObject([
     'class' => 'chocoboxxf\Easemob\Easemob',
@@ -79,5 +79,5 @@ $tokenInfo = Yii::$app->easemob->getUserToken('username', 'password');
 添加好友
 
 ```php
-$tokenInfo = Yii::$app->easemob->addFriend('username1', 'username2');
+$friendInfo = Yii::$app->easemob->addFriend('username1', 'username2');
 ```
