@@ -1,0 +1,39 @@
+{
+  "name": "chocoboxxf/yii2-easemob-sdk",
+  "type": "yii2-extension",
+  "description": "Easemob API for Yii 2.0",
+  "keywords": ["yii2", "easemob", "im", "sdk"],
+  "homepage": "https://github.com/chocoboxxf/yii2-easemob-sdk",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/chocoboxxf/yii2-easemob-sdk/issues",
+    "wiki": "https://github.com/chocoboxxf/yii2-easemob-sdk/wiki",
+    "source": "https://github.com/chocoboxxf/yii2-easemob-sdk"
+  },
+  "authors": [
+    {
+      "name": "chocoboxxf",
+      "email": "neil.xuxf@gmail.com",
+      "homepage": "https://github.com/chocoboxxf",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": "*",
+    "guzzlehttp/guzzle": "~5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "chocoboxxf\\Easemob\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "chocoboxxf\\Easemob\\Tests\\": "tests/"
+    }
+  }
+}
