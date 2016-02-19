@@ -35,6 +35,7 @@ class Easemob extends Component
     const PATH_CREATE_USER = '/users'; // 创建用户
     const PATH_GET_USER = '/users/[USER_NAME]'; // 获取单个用户
     const PATH_ADD_FRIEND = '/users/[USER_NAME]/contacts/users/[FRIEND_NAME]'; // 添加好友
+    const PATH_EXPORT_CHAT_MESSAGES = '/chatmessages'; // 导出聊天记录
     /**
      * 企业的唯一标识,开发者在环信开发者管理后台注册账号时填写的企业ID
      * @var string
@@ -232,6 +233,41 @@ class Easemob extends Component
             );
             $result = $response->json();
             return isset($result['entities']) ? reset($result['entities']) : false;
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }
+
+    /**
+     * 导出聊天记录
+     * @param string $lastTimestamp 上次导出的最后一条记录时间戳，不传则从头开始
+     * @param int $limit 当前导出分页大小，单次最多1000条记录
+     * @param string $cursor 当前导出分页游标（上次导出时返回的，返回空则表示无下一页）
+     * @return bool|mixed
+     */
+    public function exportChatMessages($lastTimestamp = '', $limit = 1000, $cursor = '')
+    {
+        try {
+            $path = self::PATH_EXPORT_CHAT_MESSAGES;
+            $data = [];
+            if (is_numeric($lastTimestamp)) {
+                $data['ql'] = 'select * where timestamp>' . $lastTimestamp;
+            }
+            if ($limit > 0) {
+                $data['limit'] = $limit;
+            }
+            if ($cursor !== '') {
+                $data['cursor'] = $cursor;
+            }
+            $response = $this->apiClient->get(
+                $this->apiBaseUrl . $path,
+                [
+                    'headers' => ['Authorization' => $this->getTokenHeader()],
+                    'query' => $data,
+                ]
+            );
+            $result = $response->json();
+            return isset($result['entities']) ? $result : false;
         } catch (\Exception $ex) {
             return false;
         }
