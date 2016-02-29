@@ -81,3 +81,15 @@ $tokenInfo = Yii::$app->easemob->getUserToken('username', 'password');
 ```php
 $friendInfo = Yii::$app->easemob->addFriend('username1', 'username2');
 ```
+
+导出聊天记录
+
+```php
+$data = Yii::$app->easemob->exportChatMessages();
+```
+
+发送透传消息
+
+```php
+$data = Yii::$app->easemob->sendCmd('users', ['user1', 'users2'], 'action1', ['key1' => 'value1'], 'admin');
+```

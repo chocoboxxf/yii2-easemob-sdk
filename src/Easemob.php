@@ -36,6 +36,17 @@ class Easemob extends Component
     const PATH_GET_USER = '/users/[USER_NAME]'; // 获取单个用户
     const PATH_ADD_FRIEND = '/users/[USER_NAME]/contacts/users/[FRIEND_NAME]'; // 添加好友
     const PATH_EXPORT_CHAT_MESSAGES = '/chatmessages'; // 导出聊天记录
+    const PATH_SEND_MESSAGES = '/messages'; // 发送消息
+    /**
+     * 消息类型
+     */
+    const MESSAGE_TYPE_CMD = 'cmd'; // 透传消息
+    /**
+     * target_type类型
+     */
+    const TARGET_TYPE_USERS = 'users'; // 给用户发消息
+    const TARGET_TYPE_GROUPS = 'chatgroups'; // 给群发消息
+    const TARGET_TYPE_ROOMS = 'chatrooms'; // 给聊天室发消息
     /**
      * 企业的唯一标识,开发者在环信开发者管理后台注册账号时填写的企业ID
      * @var string
@@ -268,6 +279,44 @@ class Easemob extends Component
             );
             $result = $response->json();
             return isset($result['entities']) ? $result : false;
+        } catch (\Exception $ex) {
+            return false;
+        }
+    }
+
+    /**
+     * 发送透传消息
+     * @param string $target_type 消息目标类型，users 给用户发消息，chatgroups 给群发消息，chatrooms 给聊天室发消息
+     * @param array $target 消息目标数组
+     * @param string $action 消息动作
+     * @param array $ext 扩展属性
+     * @param string $from 消息发送者，默认admin
+     * @return bool|mixed
+     */
+    public function sendCmd($target_type, $target, $action, $ext = [], $from = 'admin')
+    {
+        try {
+            $path = self::PATH_SEND_MESSAGES;
+            $msg = [
+                'type' => self::MESSAGE_TYPE_CMD,
+                'action' => $action,
+            ];
+            $data = [
+                'target_type' => $target_type,
+                'target' => $target,
+                'msg' => $msg,
+                'from' => $from,
+                'ext' => $ext,
+            ];
+            $response = $this->apiClient->post(
+                $this->apiBaseUrl . $path,
+                [
+                    'headers' => ['Authorization' => $this->getTokenHeader()],
+                    'json' => $data,
+                ]
+            );
+            $result = $response->json();
+            return isset($result['data']) ? $result : false;
         } catch (\Exception $ex) {
             return false;
         }
